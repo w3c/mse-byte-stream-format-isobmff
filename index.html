@@ -83,8 +83,9 @@
       // prevent error messages from being displayed for references to these objects.
       definitionMap: {},
 
-      postProcess: [ mediaSourcePostProcessor ]
+      postProcess: [ mediaSourcePostProcessor ],
 
+      xref: ["html"]
       };
     </script>
     <!-- script to register bugs -->
@@ -154,8 +155,8 @@
         allowed to appear before the <span class="iso-box">moov</span> box. These boxes MUST be accepted and ignored by the user agent and are not
         considered part of the <a def-id="init-segment"></a> in this specification.</p>
 
-      <p>The user agent MUST source attribute values for id, kind, label and language for <a def-id="audio-track"></a>, <a def-id="video-track"></a> and
-        <a def-id="text-track"></a> objects as described for MPEG-4 ISOBMFF in the in-band tracks spec [[INBANDTRACKS]].</p>
+      <p>The user agent MUST source attribute values for id, kind, label and language for {{AudioTrack}}, {{VideoTrack}} and
+        {{TextTrack}} objects as described for MPEG-4 ISOBMFF in the in-band tracks spec [[INBANDTRACKS]].</p>
     </section>
 
     <section id="iso-media-segments">
