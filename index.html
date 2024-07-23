@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="en" dir="ltr"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="generator" content="ReSpec 35.1.1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<style>
+.issue-label{text-transform:initial}
+.warning>p:first-child{margin-top:0}
+.warning{padding:.5em;border-left-width:.5em;border-left-style:solid}
+span.warning{padding:.1em .5em .15em}
+.issue.closed span.issue-number{text-decoration:line-through}
+.issue.closed span.issue-number::after{content:" (Closed)";font-size:smaller}
+.warning{border-color:#f11;border-color:var(--warning-border,#f11);border-width:.2em;border-style:solid;background:#fbe9e9;background:var(--warning-bg,#fbe9e9);color:#000;color:var(--text,#000)}
+.warning-title:before{content:"⚠";font-size:1.3em;float:left;padding-right:.3em;margin-top:-.3em}
+li.task-list-item{list-style:none}
+input.task-list-item-checkbox{margin:0 .35em .25em -1.6em;vertical-align:middle}
+.issue a.respec-gh-label{padding:5px;margin:0 2px 0 2px;font-size:10px;text-transform:none;text-decoration:none;font-weight:700;border-radius:4px;position:relative;bottom:2px;border:none;display:inline-block}
+</style>
+<style>
+dfn{cursor:pointer}
+.dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;background:var(--indextable-hover-bg,#fff);color:#000;color:var(--text,#000);box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);box-shadow:0 1em 3em -.4em var(--tocsidebar-shadow,rgba(0,0,0,.3)),0 0 1px 1px var(--tocsidebar-shadow,rgba(0,0,0,.05));border-radius:2px}
+.dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
+.dfn-panel:not(.docked)>.caret::after,.dfn-panel:not(.docked)>.caret::before{content:"";position:absolute;border:10px solid transparent;border-top:0;border-bottom:10px solid #fff;border-bottom-color:var(--indextable-hover-bg,#fff);top:0}
+.dfn-panel:not(.docked)>.caret::before{border-bottom:9px solid #a2a9b1;border-bottom-color:var(--indextable-hover-bg,#a2a9b1)}
+.dfn-panel *{margin:0}
+.dfn-panel b{display:block;color:#000;color:var(--text,#000);margin-top:.25em}
+.dfn-panel ul a[href]{color:#333;color:var(--text,#333)}
+.dfn-panel>div{display:flex}
+.dfn-panel a.self-link{font-weight:700;margin-right:auto}
+.dfn-panel .marker{padding:.1em;margin-left:.5em;border-radius:.2em;text-align:center;white-space:nowrap;font-size:90%;color:#040b1c}
+.dfn-panel .marker.dfn-exported{background:#d1edfd;box-shadow:0 0 0 .125em #1ca5f940}
+.dfn-panel .marker.idl-block{background:#8ccbf2;box-shadow:0 0 0 .125em #0670b161}
+.dfn-panel a:not(:hover){text-decoration:none!important;border-bottom:none!important}
+.dfn-panel a[href]:hover{border-bottom-width:1px}
+.dfn-panel ul{padding:0}
+.dfn-panel li{margin-left:1em}
+.dfn-panel.docked{position:fixed;left:.5em;top:unset;bottom:2em;margin:0 auto;max-width:calc(100vw - .75em * 2 - .5em - .2em * 2);max-height:30vh;overflow:auto}
+</style>
+    
+    
+<title>ISO BMFF Byte Stream Format</title>
+    
+<style id="respec-mainstyle">
+@keyframes pop{
+0%{transform:scale(1,1)}
+25%{transform:scale(1.25,1.25);opacity:.75}
+100%{transform:scale(1,1)}
+}
+a.internalDFN{color:inherit;border-bottom:1px solid #99c;text-decoration:none}
+a.externalDFN{color:inherit;border-bottom:1px dotted #ccc;text-decoration:none}
+a.bibref{text-decoration:none}
+.respec-offending-element:target{animation:pop .25s ease-in-out 0s 1}
+.respec-offending-element,a[href].respec-offending-element{text-decoration:red wavy underline}
+@supports not (text-decoration:red wavy underline){
+.respec-offending-element:not(pre){display:inline-block}
+.respec-offending-element{background:url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs=) bottom repeat-x}
+}
+#references :target{background:#eaf3ff;animation:pop .4s ease-in-out 0s 1}
+cite .bibref{font-style:normal}
+a[href].orcid{padding-left:4px;padding-right:4px}
+a[href].orcid>svg{margin-bottom:-2px}
+ol.tof,ul.tof{list-style:none outside none}
+.caption{margin-top:.5em;font-style:italic}
+#issue-summary>ul{column-count:2}
+#issue-summary li{list-style:none;display:inline-block}
+details.respec-tests-details{margin-left:1em;display:inline-block;vertical-align:top}
+details.respec-tests-details>*{padding-right:2em}
+details.respec-tests-details[open]{z-index:999999;position:absolute;border:thin solid #cad3e2;border-radius:.3em;background-color:#fff;padding-bottom:.5em}
+details.respec-tests-details[open]>summary{border-bottom:thin solid #cad3e2;padding-left:1em;margin-bottom:1em;line-height:2em}
+details.respec-tests-details>ul{width:100%;margin-top:-.3em}
+details.respec-tests-details>li{padding-left:1em}
+.self-link:hover{opacity:1;text-decoration:none;background-color:transparent}
+aside.example .marker>a.self-link{color:inherit}
+.header-wrapper{display:flex;align-items:baseline}
+:is(h2,h3,h4,h5,h6):not(#toc>h2,#abstract>h2,#sotd>h2,.head>h2){position:relative;left:-.5em}
+:is(h2,h3,h4,h5,h6):not(#toch2)+a.self-link{color:inherit;order:-1;position:relative;left:-1.1em;font-size:1rem;opacity:.5}
+:is(h2,h3,h4,h5,h6)+a.self-link::before{content:"§";text-decoration:none;color:var(--heading-text)}
+:is(h2,h3)+a.self-link{top:-.2em}
+:is(h4,h5,h6)+a.self-link::before{color:#000}
+@media (max-width:767px){
+dd{margin-left:0}
+}
+@media print{
+.removeOnSave{display:none}
+}
+</style>
+
+    
+
+    
+<style>
+
+      .iso-box { font-weight: bold; }
+      .iso-var { font-style: italic; }
+    
+</style>
+  
+<meta name="color-scheme" content="light">
+<meta name="revision" content="40cacca5c4f5e48ba574749e61037038368a972e">
+<meta name="description" content="This specification defines a Media Source Extensions™ [MEDIA-SOURCE] byte stream format specification based on the ISO Base Media
+      File Format [ISOBMFF].">
+<style>
+var{position:relative;cursor:pointer}
+var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
+var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#222}
+var[data-type]::after{content:attr(data-type);transform:translateX(-50%) translateY(-100%);background:#222;text-align:center;font-family:"Dank Mono","Fira Code",monospace;font-style:normal;padding:6px;border-radius:3px;color:#daca88;text-indent:0;font-weight:400}
+var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
+</style>
+<script id="initialUserConfig" type="application/json">{
+  "specStatus": "ED",
+  "shortName": "mse-byte-stream-format-isobmff",
+  "edDraftURI": "https://w3c.github.io/mse-byte-stream-format-isobmff/",
+  "editors": [
+    {
+      "name": "Mark Watson",
+      "company": "Netflix Inc.",
+      "companyURL": "https://www.netflix.com/",
+      "w3cid": "46379"
+    }
+  ],
+  "formerEditors": [
+    {
+      "name": "Matthew Wolenetz",
+      "note": "Until February 2024",
+      "mailto": "matt.wolenetz@gmail.com",
+      "company": "W3C Invited Expert",
+      "w3cid": "148095",
+      "url": "mailto:matt.wolenetz@gmail.com"
+    },
+    {
+      "name": "Jerry Smith",
+      "note": "Until September 2017",
+      "company": "Microsoft Corporation",
+      "companyURL": "https://www.microsoft.com/"
+    },
+    {
+      "name": "Aaron Colwell",
+      "note": "Until April 2015",
+      "company": "Google Inc.",
+      "companyURL": "https://www.google.com/"
+    },
+    {
+      "name": "Adrian Bateman",
+      "note": "Until April 2015",
+      "company": "Microsoft Corporation",
+      "companyURL": "https://www.microsoft.com/"
+    }
+  ],
+  "github": "w3c/mse-byte-stream-format-isobmff",
+  "wgPublicList": "public-media-wg",
+  "group": "media",
+  "xref": [
+    "html",
+    "media-source"
+  ],
+  "gitRevision": "40cacca5c4f5e48ba574749e61037038368a972e",
+  "publishISODate": "2024-07-23T00:00:00.000Z",
+  "generatedSubtitle": "W3C Editor's Draft 23 July 2024"
+}</script>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED"></head>
+  <body class="h-entry" data-cite="html media-source"><div class="head">
+    <p class="logos"><a class="logo" href="https://www.w3.org/"><img crossorigin="" alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+  </a></p>
+    <h1 id="title" class="title">ISO BMFF Byte Stream Format</h1> 
+    <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">W3C Editor's Draft</a> <time class="dt-published" datetime="2024-07-23">23 July 2024</time></p>
+    <details open="">
+      <summary>More details about this document</summary>
+      <dl>
+        <dt>This version:</dt><dd>
+                <a class="u-url" href="https://w3c.github.io/mse-byte-stream-format-isobmff/">https://w3c.github.io/mse-byte-stream-format-isobmff/</a>
+              </dd>
+        <dt>Latest published version:</dt><dd>
+                <a href="https://www.w3.org/TR/mse-byte-stream-format-isobmff/">https://www.w3.org/TR/mse-byte-stream-format-isobmff/</a>
+              </dd>
+        <dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/mse-byte-stream-format-isobmff/">https://w3c.github.io/mse-byte-stream-format-isobmff/</a></dd>
+        <dt>History:</dt><dd>
+                    <a href="https://www.w3.org/standards/history/mse-byte-stream-format-isobmff/">https://www.w3.org/standards/history/mse-byte-stream-format-isobmff/</a>
+                  </dd><dd>
+                    <a href="https://github.com/w3c/mse-byte-stream-format-isobmff/commits/">Commit history</a>
+                  </dd>
+        
+        
+        
+        
+        
+        <dt>Editor:</dt><dd class="editor p-author h-card vcard" data-editor-id="46379">
+    <span class="p-name fn">Mark Watson</span> (<a class="p-org org h-org" href="https://www.netflix.com/">Netflix Inc.</a>)
+  </dd>
+        <dt>
+                Former editors:
+              </dt><dd class="editor p-author h-card vcard" data-editor-id="148095">
+    <a class="ed_mailto u-email email p-name" href="mailto:matt.wolenetz@gmail.com">Matthew Wolenetz</a> (<span class="p-org org h-org">W3C Invited Expert</span>) (Until February 2024)
+  </dd><dd class="editor p-author h-card vcard">
+    <span class="p-name fn">Jerry Smith</span> (<a class="p-org org h-org" href="https://www.microsoft.com/">Microsoft Corporation</a>) (Until September 2017)
+  </dd><dd class="editor p-author h-card vcard">
+    <span class="p-name fn">Aaron Colwell</span> (<a class="p-org org h-org" href="https://www.google.com/">Google Inc.</a>) (Until April 2015)
+  </dd><dd class="editor p-author h-card vcard">
+    <span class="p-name fn">Adrian Bateman</span> (<a class="p-org org h-org" href="https://www.microsoft.com/">Microsoft Corporation</a>) (Until April 2015)
+  </dd>
+        
+        <dt>Feedback:</dt><dd>
+        <a href="https://github.com/w3c/mse-byte-stream-format-isobmff/">GitHub w3c/mse-byte-stream-format-isobmff</a>
+        (<a href="https://github.com/w3c/mse-byte-stream-format-isobmff/pulls/">pull requests</a>,
+        <a href="https://github.com/w3c/mse-byte-stream-format-isobmff/issues/new/choose">new issue</a>,
+        <a href="https://github.com/w3c/mse-byte-stream-format-isobmff/issues/">open issues</a>)
+      </dd><dd><a href="mailto:public-media-wg@w3.org?subject=%5Bmse-byte-stream-format-isobmff%5D%20YOUR%20TOPIC%20HERE">public-media-wg@w3.org</a> with subject line <kbd>[mse-byte-stream-format-isobmff] <em>… message topic …</em></kbd> (<a rel="discussion" href="https://lists.w3.org/Archives/Public/public-media-wg">archives</a>)</dd>
+        
+        
+      </dl>
+    </details>
+    
+    
+    <p class="copyright">
+    <a href="https://www.w3.org/policies/#copyright">Copyright</a>
+    ©
+    2024
+    
+    <a href="https://www.w3.org/">World Wide Web Consortium</a>.
+    <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup>
+    <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>,
+    <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and
+    <a rel="license" href="https://www.w3.org/copyright/software-license-2023/" title="W3C Software and Document Notice and License">permissive document license</a> rules apply.
+  </p>
+    <hr title="Separator for header">
+  </div>
+    <section id="abstract" class="introductory"><h2>Abstract</h2>
+      <p>This specification defines a <cite><a data-matched-text="[[[MEDIA-SOURCE]]]" href="https://www.w3.org/TR/media-source-2/">Media Source Extensions™</a></cite> [<cite><a class="bibref" data-link-type="biblio" href="#bib-media-source" title="Media Source Extensions™">MEDIA-SOURCE</a></cite>] byte stream format specification based on the ISO Base Media
+      File Format [<cite><a class="bibref" data-link-type="biblio" href="#bib-isobmff" title="Information technology — Coding of audio-visual objects — Part 12: ISO base media file format">ISOBMFF</a></cite>].</p>
+    </section>
+
+    <section id="sotd" class="introductory"><h2>Status of This Document</h2><p><em>This section describes the status of this
+      document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr>
+      publications and the latest revision of this technical report can be found
+      in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+      https://www.w3.org/TR/.</em></p>
+      <p>The working group maintains <a href="https://github.com/w3c/mse-byte-stream-format-isobmff/issues">a list of all bug reports that the editors have not yet tried to address</a>;
+      there may also be related open bugs in the <a href="https://github.com/w3c/media-source">GitHub repository</a> of the <cite><a data-matched-text="[[[MEDIA-SOURCE]]]" href="https://www.w3.org/TR/media-source-2/">Media Source Extensions™</a></cite> specification.</p>
+    <p>
+    This document was published by the <a href="https://www.w3.org/groups/wg/media">Media Working Group</a> as
+    an Editor's Draft. 
+  </p><p>Publication as an Editor's Draft does not
+  imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. </p><p>
+    This is a draft document and may be updated, replaced or obsoleted by other
+    documents at any time. It is inappropriate to cite this document as other
+    than work in progress.
+    
+  </p><p>
+    
+        This document was produced by a group
+        operating under the
+        <a href="https://www.w3.org/policies/patent-policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent
+          Policy</a>.
+      
+    
+                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a
+                <a rel="disclosure" href="https://www.w3.org/groups/wg/media/ipr">public list of any patent disclosures</a>
+          made in connection with the deliverables of
+          the group; that page also includes
+          instructions for disclosing a patent. An individual who has actual
+          knowledge of a patent which the individual believes contains
+          <a href="https://www.w3.org/policies/patent-policy/#def-essential">Essential Claim(s)</a>
+          must disclose the information in accordance with
+          <a href="https://www.w3.org/policies/patent-policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+        
+  </p><p>
+                      This document is governed by the
+                      <a id="w3c_process_revision" href="https://www.w3.org/policies/process/20231103/">03 November 2023 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+                    </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#introduction"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#mime-parameters"><bdi class="secno">2. </bdi>MIME-type parameters</a></li><li class="tocline"><a class="tocxref" href="#iso-init-segments"><bdi class="secno">3. </bdi>Initialization Segments</a></li><li class="tocline"><a class="tocxref" href="#iso-media-segments"><bdi class="secno">4. </bdi>Media Segments</a></li><li class="tocline"><a class="tocxref" href="#iso-random-access-points"><bdi class="secno">5. </bdi>Random Access Points</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">6. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><bdi class="secno">7. </bdi>Acknowledgments</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">A. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">A.1 </bdi>Normative references</a></li></ol></li></ol></nav>
+
+    <section id="introduction"><div class="header-wrapper"><h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction</h2><a class="self-link" href="#introduction" aria-label="Permalink for Section 1."></a></div>
+      
+      <p>This specification defines segment formats for implementations of <cite><a data-matched-text="[[[MEDIA-SOURCE]]]" href="https://www.w3.org/TR/media-source-2/">Media Source Extensions™</a></cite> [<cite><a class="bibref" data-link-type="biblio" href="#bib-media-source" title="Media Source Extensions™">MEDIA-SOURCE</a></cite>] that choose to support the ISO Base Media File Format [<cite><a class="bibref" data-link-type="biblio" href="#bib-isobmff" title="Information technology — Coding of audio-visual objects — Part 12: ISO base media file format">ISOBMFF</a></cite>].</p>
+      <p>It defines the MIME-type parameters used to signal codecs, and provides
+      the necessary format specific definitions for <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segments</a>, <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segments</a>, and <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#random-access-point">random access points</a> required by
+      the <a href="https://www.w3.org/TR/media-source-2/#byte-stream-formats">Byte Stream Formats section</a> of the <cite><a data-matched-text="[[[MEDIA-SOURCE]]]" href="https://www.w3.org/TR/media-source-2/">Media Source Extensions™</a></cite> specification.</p>
+    </section>
+
+    <section id="mime-parameters"><div class="header-wrapper"><h2 id="x2-mime-type-parameters"><bdi class="secno">2. </bdi>MIME-type parameters</h2><a class="self-link" href="#mime-parameters" aria-label="Permalink for Section 2."></a></div>
+      
+      <p>This section specifies the parameters that can be used in the MIME-type passed to <a data-link-type="idl" data-lt="isTypeSupported()" data-type="method" href="https://www.w3.org/TR/media-source-2/#dom-mediasource-istypesupported"><code>isTypeSupported</code></a><code>()</code> or <a data-link-type="idl" data-lt="addSourceBuffer()" data-type="method" href="https://www.w3.org/TR/media-source-2/#dom-mediasource-addsourcebuffer"><code>addSourceBuffer</code></a><code>()</code>.</p>
+      <p>MIME-types for this specification <em class="rfc2119">MUST</em> conform to the rules outlined for "audio/mp4" and "video/mp4" in [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc6381" title="The 'Codecs' and 'Profiles' Parameters for &quot;Bucket&quot; Media Types">RFC6381</a></cite>].
+      </p>
+      <div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="3"><span>Note</span></div><div class="">Implementations <em class="rfc2119">MAY</em> only implement a subset of the codecs and profiles mentioned in [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc6381" title="The 'Codecs' and 'Profiles' Parameters for &quot;Bucket&quot; Media Types">RFC6381</a></cite>].</div></div>
+    </section>
+
+    <section id="iso-init-segments"><div class="header-wrapper"><h2 id="x3-initialization-segments"><bdi class="secno">3. </bdi>Initialization Segments</h2><a class="self-link" href="#iso-init-segments" aria-label="Permalink for Section 3."></a></div>
+      
+      <p>An ISO BMFF <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a> is defined in this specification as a single File Type Box (<span class="iso-box">ftyp</span>) followed by a single Movie Box (<span class="iso-box">moov</span>).</p>
+
+      <p>The user agent <em class="rfc2119">MUST</em> run the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-append-error">append error</a> algorithm if any of the following conditions are met:</p>
+      <ol>
+        <li>A File Type Box contains a <span class="iso-var">major_brand</span> or <span class="iso-var">compatible_brand</span> that the user agent does not support.</li>
+        <li>A box or field in the Movie Box is encountered that violates the requirements mandated
+          by the <span class="iso-var">major_brand</span> or one of the
+          <span class="iso-var">compatible_brands</span> in the File Type Box.</li>
+        <li>The tracks in the Movie Box contain samples (i.e., the <span class="iso-var">entry_count</span> in the
+          <span class="iso-box">stts</span>, <span class="iso-box">stsc</span> or <span class="iso-box">stco</span> boxes are not set to zero).</li>
+        <li>A Movie Extends (<span class="iso-box">mvex</span>) box is not contained in the Movie (<span class="iso-box">moov</span>) box to indicate that Movie Fragments are to be expected.</li>
+      </ol>
+      <p>The user agent <em class="rfc2119">MUST</em> support setting the offset from media composition time to movie presentation time by handling an Edit Box (<span class="iso-box">edts</span>) containing a single Edit List Box
+        (<span class="iso-box">elst</span>) that contains a single edit with media rate one. This edit <em class="rfc2119">MAY</em> have a duration of 0 (indicating that it spans all subsequent media) or <em class="rfc2119">MAY</em> have a non-zero duration
+        (indicating the total duration of the movie including fragments).</p>
+
+      <p>The user agent <em class="rfc2119">MUST</em> support codec configurations stored out-of-band in the sample entry, and for codecs which allow codec configurations stored inband in the samples themselves, the user agent <em class="rfc2119">SHOULD</em> support codec configurations stored inband.</p>
+      <div class="note" role="note" id="issue-container-generatedID-0"><div role="heading" class="note-title marker" id="h-note-0" aria-level="3"><span>Note</span></div><p class="">For example, for codecs which include SPS and PPS parameter sets, for maximum content interoperability, user agents are strongly advised to support both inband (e.g., as defined for avc3/avc4) and out-of-band (e.g., as defined for avc1/2) storage of the SPS and PPS.</p></div>
+
+      <p>Valid top-level boxes such as <span class="iso-box">pdin</span>, <span class="iso-box">free</span>, and <span class="iso-box">sidx</span> are
+        allowed to appear before the <span class="iso-box">moov</span> box. These boxes <em class="rfc2119">MUST</em> be accepted and ignored by the user agent and are not
+        considered part of the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a> in this specification.</p>
+
+      <p>The user agent <em class="rfc2119">MUST</em> source attribute values for <code>id</code>, <code>kind</code>, <code>label</code> and <code>language</code> for <a data-link-type="idl" data-lt="AudioTrack" data-type="interface" href="https://html.spec.whatwg.org/multipage/media.html#audiotrack"><code>AudioTrack</code></a>, <a data-link-type="idl" data-lt="VideoTrack" data-type="interface" href="https://html.spec.whatwg.org/multipage/media.html#videotrack"><code>VideoTrack</code></a> and
+        <a data-link-type="idl" data-lt="TextTrack" data-type="interface" href="https://html.spec.whatwg.org/multipage/media.html#texttrack"><code>TextTrack</code></a> objects as described for MPEG-4 ISOBMFF in the in-band tracks spec [<cite><a class="bibref" data-link-type="biblio" href="#bib-inbandtracks" title="Sourcing In-band Media Resource Tracks from Media Containers into HTML">INBANDTRACKS</a></cite>].</p>
+    </section>
+
+    <section id="iso-media-segments"><div class="header-wrapper"><h2 id="x4-media-segments"><bdi class="secno">4. </bdi>Media Segments</h2><a class="self-link" href="#iso-media-segments" aria-label="Permalink for Section 4."></a></div>
+      
+      <p>An ISO BMFF <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a> is defined in this specification as one optional
+        Segment Type Box (<span class="iso-box">styp</span>) followed by a single Movie Fragment Box
+        (<span class="iso-box">moof</span>) followed by one or more Media Data Boxes (<span class="iso-box">mdat</span>).
+        If the Segment Type Box is not present, the segment <em class="rfc2119">MUST</em> conform to the brands listed in the
+        File Type Box (<span class="iso-box">ftyp</span>) in the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a>.</p>
+      <p>Valid top-level boxes defined in [<cite><a class="bibref" data-link-type="biblio" href="#bib-isobmff" title="Information technology — Coding of audio-visual objects — Part 12: ISO base media file format">ISOBMFF</a></cite>] other than <span class="iso-box">ftyp</span>,
+        <span class="iso-box">moov</span>, <span class="iso-box">styp</span>, <span class="iso-box">moof</span>, and <span class="iso-box">mdat</span> are allowed to appear between the end of an
+        <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a> or <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a> and before the beginning of a new <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a>.
+        These boxes <em class="rfc2119">MUST</em> be accepted and ignored by the user agent and are not considered part of the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a> in this
+        specification.
+      </p>
+
+      <p>The user agent <em class="rfc2119">MUST</em> run the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-append-error">append error</a> algorithm if any of the following conditions are met:</p>
+      <ol>
+        <li>A box or field in the Movie Fragment Box is encountered that violates the requirements mandated
+          by the <span class="iso-var">major_brand</span> or one of the
+          <span class="iso-var">compatible_brands</span> in the Segment Type Box in this
+          <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a> or the File Type Box in the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a> if a
+          Segment Type Box is not present.</li>
+        <li>This <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-media-segment">media segment</a> contains a Segment Type Box that is not compatible with the
+          File Type Box in the <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#dfn-initialization-segment">initialization segment</a>.</li>
+  <li>The Movie Fragment Box does not contain at least one Track Fragment Box (<span class="iso-box">traf</span>).</li>
+  <li>The Movie Fragment Box does not use <a href="#dfn-movie-fragment-relative-addressing" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-movie-fragment-relative-addressing-1">movie-fragment relative addressing</a>.</li>
+  <li>External data references are being used.</li>
+  <li>At least one Track Fragment Box does not contain a Track Fragment Decode Time Box (<span class="iso-box">tfdt</span>)</li>
+  <li>The Media Data Boxes do not contain all the samples referenced by the Track Fragment Run Boxes (<span class="iso-box">trun</span>) of the Movie Fragment Box.</li>
+  <li>Inband parameter sets are not present in the appropriate samples and parameter sets are not present in the last initialization segment appended.</li>
+      </ol>
+
+      <p>A Movie Fragment Box uses <dfn id="dfn-movie-fragment-relative-addressing" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">movie-fragment relative addressing</dfn>
+        when the first Track Fragment Run(<span class="iso-box">trun</span>) box in each Track Fragment Box
+        has the <span class="iso-var">data-offset-present</span> flag set and either of the following
+        conditions are met:</p>
+      <ul>
+        <li>Every Track Fragment Box in a Movie Fragment Box has the <span class="iso-var">default-base-is-moof</span> flag set.
+          <div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="3"><span>Note</span></div><p class="">This implies that the <span class="iso-var">base-data-offset-present</span> flag
+            is not set.</p></div>
+        </li>
+        <li>The Movie Fragment Box contains a single Track Fragment Box and that box does not have the <span class="iso-var">base-data-offset-present</span> flag set.</li>
+      </ul>
+    </section>
+
+    <section id="iso-random-access-points"><div class="header-wrapper"><h2 id="x5-random-access-points"><bdi class="secno">5. </bdi>Random Access Points</h2><a class="self-link" href="#iso-random-access-points" aria-label="Permalink for Section 5."></a></div>
+      
+      <p>A <a data-link-type="dfn|abstract-op" data-type="dfn" href="https://www.w3.org/TR/media-source-2/#random-access-point">random access point</a> as defined in this specification corresponds to a Stream Access Point of type 1 or 2 as defined in Annex I of [<cite><a class="bibref" data-link-type="biblio" href="#bib-isobmff" title="Information technology — Coding of audio-visual objects — Part 12: ISO base media file format">ISOBMFF</a></cite>].</p>
+    </section>
+
+    <section id="conformance"><div class="header-wrapper"><h2 id="x6-conformance"><bdi class="secno">6. </bdi>Conformance</h2><a class="self-link" href="#conformance" aria-label="Permalink for Section 6."></a></div><p>As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this specification are non-normative. Everything else in this specification is normative.</p><p>
+        The key words <em class="rfc2119">MAY</em>, <em class="rfc2119">MUST</em>, and <em class="rfc2119">SHOULD</em> in this document
+        are to be interpreted as described in
+        <a href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a>
+        [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]
+        when, and only when, they appear in all capitals, as shown here.
+      </p></section>
+
+    <section id="acknowledgements"><div class="header-wrapper"><h2 id="x7-acknowledgments"><bdi class="secno">7. </bdi>Acknowledgments</h2><a class="self-link" href="#acknowledgements" aria-label="Permalink for Section 7."></a></div>
+      
+      The editors would like to thank
+
+      Chris Poole,
+      Cyril Concolato,
+      David Singer,
+      Jer Noble,
+      Jerry Smith,
+      Joe Steele,
+      John Simmons,
+      Kevin Streeter,
+      Michael Thornburgh,
+      and Steven Robertson for their contributions to this specification.
+    </section>
+
+  
+
+<section id="references" class="appendix"><div class="header-wrapper"><h2 id="a-references"><bdi class="secno">A. </bdi>References</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix A."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="a-1-normative-references"><bdi class="secno">A.1 </bdi>Normative references</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix A.1"></a></div>
+    
+    <dl class="bibliography"><dt id="bib-html">[html]</dt><dd>
+      <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters.  WHATWG. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+    </dd><dt id="bib-inbandtracks">[INBANDTRACKS]</dt><dd>
+      <a href="https://dev.w3.org/html5/html-sourcing-inband-tracks/"><cite>Sourcing In-band Media Resource Tracks from Media Containers into HTML</cite></a>. Silvia Pfeiffer; Bob Lund.  W3C. 26 April 2015. Unofficial Draft. URL: <a href="https://dev.w3.org/html5/html-sourcing-inband-tracks/">https://dev.w3.org/html5/html-sourcing-inband-tracks/</a>
+    </dd><dt id="bib-isobmff">[ISOBMFF]</dt><dd>
+      <a href="https://www.iso.org/standard/85596.html"><cite>Information technology — Coding of audio-visual objects — Part 12: ISO base media file format</cite></a>.  ISO/IEC. Under development. URL: <a href="https://www.iso.org/standard/85596.html">https://www.iso.org/standard/85596.html</a>
+    </dd><dt id="bib-media-source">[MEDIA-SOURCE]</dt><dd>
+      <a href="https://www.w3.org/TR/media-source-2/"><cite>Media Source Extensions™</cite></a>. Jean-Yves Avenard; Mark Watson.  W3C. 4 July 2024. W3C Working Draft. URL: <a href="https://www.w3.org/TR/media-source-2/">https://www.w3.org/TR/media-source-2/</a>
+    </dd><dt id="bib-rfc2119">[RFC2119]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner.  IETF. March 1997. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>
+    </dd><dt id="bib-rfc6381">[RFC6381]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc6381"><cite>The 'Codecs' and 'Profiles' Parameters for "Bucket" Media Types</cite></a>. R. Gellens; D. Singer; P. Frojdh.  IETF. August 2011. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc6381">https://www.rfc-editor.org/rfc/rfc6381</a>
+    </dd><dt id="bib-rfc8174">[RFC8174]</dt><dd>
+      <a href="https://www.rfc-editor.org/rfc/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba.  IETF. May 2017. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>
+    </dd></dl>
+  </section></section><p role="navigation" id="back-to-top">
+    <a href="#title"><abbr title="Back to Top">↑</abbr></a>
+  </p><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-movie-fragment-relative-addressing" aria-label="Links in this document to definition: movie-fragment relative addressing">
+      <span class="caret"></span>
+      <div>
+        <a class="self-link" href="#dfn-movie-fragment-relative-addressing" aria-label="Permalink for definition: movie-fragment relative addressing. Activate to close this dialog.">Permalink</a>
+         
+      </div>
+      <p><b>Referenced in:</b></p>
+      <ul>
+    <li>
+      <a href="#ref-for-dfn-movie-fragment-relative-addressing-1" title="§ 4. Media Segments">§ 4. Media Segments</a> 
+    </li>
+  </ul>
+    </div><script id="respec-dfn-panel">(() => {
+// @ts-check
+if (document.respec) {
+  document.respec.ready.then(setupPanel);
+} else {
+  setupPanel();
+}
+
+function setupPanel() {
+  const listener = panelListener();
+  document.body.addEventListener("keydown", listener);
+  document.body.addEventListener("click", listener);
+}
+
+function panelListener() {
+  /** @type {HTMLElement} */
+  let panel = null;
+  return event => {
+    const { target, type } = event;
+
+    if (!(target instanceof HTMLElement)) return;
+
+    // For keys, we only care about Enter key to activate the panel
+    // otherwise it's activated via a click.
+    if (type === "keydown" && event.key !== "Enter") return;
+
+    const action = deriveAction(event);
+
+    switch (action) {
+      case "show": {
+        hidePanel(panel);
+        /** @type {HTMLElement} */
+        const dfn = target.closest("dfn, .index-term");
+        panel = document.getElementById(`dfn-panel-for-${dfn.id}`);
+        const coords = deriveCoordinates(event);
+        displayPanel(dfn, panel, coords);
+        break;
+      }
+      case "dock": {
+        panel.style.left = null;
+        panel.style.top = null;
+        panel.classList.add("docked");
+        break;
+      }
+      case "hide": {
+        hidePanel(panel);
+        panel = null;
+        break;
+      }
+    }
+  };
+}
+
+/**
+ * @param {MouseEvent|KeyboardEvent} event
+ */
+function deriveCoordinates(event) {
+  const target = /** @type HTMLElement */ (event.target);
+
+  // We prevent synthetic AT clicks from putting
+  // the dialog in a weird place. The AT events sometimes
+  // lack coordinates, so they have clientX/Y = 0
+  const rect = target.getBoundingClientRect();
+  if (
+    event instanceof MouseEvent &&
+    event.clientX >= rect.left &&
+    event.clientY >= rect.top
+  ) {
+    // The event probably happened inside the bounding rect...
+    return { x: event.clientX, y: event.clientY };
+  }
+
+  // Offset to the middle of the element
+  const x = rect.x + rect.width / 2;
+  // Placed at the bottom of the element
+  const y = rect.y + rect.height;
+  return { x, y };
+}
+
+/**
+ * @param {Event} event
+ */
+function deriveAction(event) {
+  const target = /** @type {HTMLElement} */ (event.target);
+  const hitALink = !!target.closest("a");
+  if (target.closest("dfn:not([data-cite]), .index-term")) {
+    return hitALink ? "none" : "show";
+  }
+  if (target.closest(".dfn-panel")) {
+    if (hitALink) {
+      return target.classList.contains("self-link") ? "hide" : "dock";
+    }
+    const panel = target.closest(".dfn-panel");
+    return panel.classList.contains("docked") ? "hide" : "none";
+  }
+  if (document.querySelector(".dfn-panel:not([hidden])")) {
+    return "hide";
+  }
+  return "none";
+}
+
+/**
+ * @param {HTMLElement} dfn
+ * @param {HTMLElement} panel
+ * @param {{ x: number, y: number }} clickPosition
+ */
+function displayPanel(dfn, panel, { x, y }) {
+  panel.hidden = false;
+  // distance (px) between edge of panel and the pointing triangle (caret)
+  const MARGIN = 20;
+
+  const dfnRects = dfn.getClientRects();
+  // Find the `top` offset when the `dfn` can be spread across multiple lines
+  let closestTop = 0;
+  let minDiff = Infinity;
+  for (const rect of dfnRects) {
+    const { top, bottom } = rect;
+    const diffFromClickY = Math.abs((top + bottom) / 2 - y);
+    if (diffFromClickY < minDiff) {
+      minDiff = diffFromClickY;
+      closestTop = top;
+    }
+  }
+
+  const top = window.scrollY + closestTop + dfnRects[0].height;
+  const left = x - MARGIN;
+  panel.style.left = `${left}px`;
+  panel.style.top = `${top}px`;
+
+  // Find if the panel is flowing out of the window
+  const panelRect = panel.getBoundingClientRect();
+  const SCREEN_WIDTH = Math.min(window.innerWidth, window.screen.width);
+  if (panelRect.right > SCREEN_WIDTH) {
+    const newLeft = Math.max(MARGIN, x + MARGIN - panelRect.width);
+    const newCaretOffset = left - newLeft;
+    panel.style.left = `${newLeft}px`;
+    /** @type {HTMLElement} */
+    const caret = panel.querySelector(".caret");
+    caret.style.left = `${newCaretOffset}px`;
+  }
+
+  // As it's a dialog, we trap focus.
+  // TODO: when <dialog> becomes a implemented, we should really
+  // use that.
+  trapFocus(panel, dfn);
+}
+
+/**
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function trapFocus(panel, dfn) {
+  /** @type NodeListOf<HTMLAnchorElement> elements */
+  const anchors = panel.querySelectorAll("a[href]");
+  // No need to trap focus
+  if (!anchors.length) return;
+
+  // Move focus to first anchor element
+  const first = anchors.item(0);
+  first.focus();
+
+  const trapListener = createTrapListener(anchors, panel, dfn);
+  panel.addEventListener("keydown", trapListener);
+
+  // Hiding the panel releases the trap
+  const mo = new MutationObserver(records => {
+    const [record] = records;
+    const target = /** @type HTMLElement */ (record.target);
+    if (target.hidden) {
+      panel.removeEventListener("keydown", trapListener);
+      mo.disconnect();
+    }
+  });
+  mo.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+}
+
+/**
+ *
+ * @param {NodeListOf<HTMLAnchorElement>} anchors
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function createTrapListener(anchors, panel, dfn) {
+  const lastIndex = anchors.length - 1;
+  let currentIndex = 0;
+  return event => {
+    switch (event.key) {
+      // Hitting "Tab" traps us in a nice loop around elements.
+      case "Tab": {
+        event.preventDefault();
+        currentIndex += event.shiftKey ? -1 : +1;
+        if (currentIndex < 0) {
+          currentIndex = lastIndex;
+        } else if (currentIndex > lastIndex) {
+          currentIndex = 0;
+        }
+        anchors.item(currentIndex).focus();
+        break;
+      }
+
+      // Hitting "Enter" on an anchor releases the trap.
+      case "Enter":
+        hidePanel(panel);
+        break;
+
+      // Hitting "Escape" returns focus to dfn.
+      case "Escape":
+        hidePanel(panel);
+        dfn.focus();
+        return;
+    }
+  };
+}
+
+/** @param {HTMLElement} panel */
+function hidePanel(panel) {
+  if (!panel) return;
+  panel.hidden = true;
+  panel.classList.remove("docked");
+}
+})()</script><script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script></body></html>
